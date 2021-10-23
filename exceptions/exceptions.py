@@ -1,0 +1,2 @@
+class WrongPinException(Exception):
+    pass

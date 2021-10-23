@@ -1,5 +1,8 @@
 class Withdrawal:
+    count = 0
+
     def __init__(self):
-        self._id = 0
-        self._date = None
-        self._amount = 0
+        self.count += 1
+        self.__id = self.count
+        self.__date = None
+        self.__amount = 0
