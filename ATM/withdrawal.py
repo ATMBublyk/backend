@@ -1,8 +1,23 @@
+from datetime import datetime
+
+
 class Withdrawal:
     count = 0
 
-    def __init__(self):
+    def __init__(self, date: datetime, amount: int):
         self.count += 1
-        self.__id = self.count
-        self.__date = None
-        self.__amount = 0
+        self._id = self.count
+        self._date = date
+        self._amount = amount
+
+    @property
+    def id(self):
+        return self._id
+
+    @property
+    def date(self):
+        return self._date
+
+    @property
+    def amount(self):
+        return self._amount

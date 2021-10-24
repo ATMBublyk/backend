@@ -1,4 +1,5 @@
 from exceptions.exceptions import WrongPinException
+from ATM.account import Account
 
 
 class Bank:
@@ -6,7 +7,7 @@ class Bank:
         self.__accounts = {}  # card number, account
         self.bank_name = name
 
-    def add_account(self, account):
+    def add_account(self, account: Account):
         self.__accounts[account.card_number] = account
 
     def get_account(self, card_number, pin):

@@ -5,17 +5,18 @@ class ATM:
         self._is_card_in: bool = False
         self._is_pin_right: bool = False
         self._bank = None
+        self._account = None
 
-    def start_session(self, card_number, pin):
+    def start_session(self, card_number: str, pin: str | int):
         pass
 
-    def withdraw_money(self, amount):
+    def withdraw_money(self, amount: int):
         pass
 
     def get_balance(self) -> int:
         pass
 
-    def put_money(self, amount):
+    def deposit(self, amount: int):
         pass
 
     def transfer(self, amount, destination_card):
