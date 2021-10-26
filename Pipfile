@@ -5,6 +5,12 @@ name = "pypi"
 
 [packages]
 flask = "*"
+flask-restful = "*"
+pydantic = "*"
+flask-pydantic = "*"
+marshmallow = "*"
+flask-sqlalchemy = "*"
+flask-jwt-extended = "*"
 
 [dev-packages]
 

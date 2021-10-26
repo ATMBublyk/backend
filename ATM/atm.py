@@ -7,7 +7,7 @@ class ATM:
         self._bank = None
         self._account = None
 
-    def start_session(self, card_number: str, pin: str | int):
+    def start_session(self, card_number: str, pin: str):
         pass
 
     def withdraw_money(self, amount: int):

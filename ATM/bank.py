@@ -3,7 +3,11 @@ from ATM.account import Account
 
 
 class Bank:
+    count = 0
+
     def __init__(self, name):
+        self.count += 1
+        self._id = self.count
         self.__accounts = {}  # card number, account
         self.bank_name = name
 
