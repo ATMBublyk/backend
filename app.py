@@ -2,7 +2,11 @@ from flask import Flask, jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 
-from resources.login import Login, Balance
+from resources.login import Login
+from resources.balance import Balance
+from resources.deposit import Deposit, Deposits
+from resources.withdrawal import Withdrawal, Withdrawals
+from resources.transfer import Transfer, Transfers
 from db import db
 from models.bank import BankModel
 from models.account import AccountModel
@@ -22,12 +26,20 @@ def create_tables():
     db.create_all()
     bank = BankModel('Privat')
     bank.save_to_db()
-    account = AccountModel('Yarema', '1234', '5167', bank.id, 1544)
+    account = AccountModel('Yarema', '5167', '1234', bank.id, 1544)
     account.save_to_db()
+    account2 = AccountModel('Nikmas', '5168', '4321', bank.id, 3000)
+    account2.save_to_db()
 
 
 api.add_resource(Login, '/login')
 api.add_resource(Balance, '/balance')
+api.add_resource(Deposit, '/deposit')
+api.add_resource(Deposits, '/deposits')
+api.add_resource(Withdrawal, '/withdrawal')
+api.add_resource(Withdrawals, '/withdrawals')
+api.add_resource(Transfer, '/transfer')
+api.add_resource(Transfers, '/transfers')
 
 jwt = JWTManager(app)
 

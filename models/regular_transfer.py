@@ -8,14 +8,13 @@ class RegularTransferModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     destination_card = db.Column(db.String)
-    amount = db.Column(db.Integer)
+    amount = db.Column(db.Float)
     periodicity = db.Column(db.String)
     first_payment_date = db.Column(db.DateTime)
     account = db.relationship('AccountModel')
     account_id = db.Column(db.Integer, db.ForeignKey('accounts.id'))
 
-    def __init__(self, destination_card, amount, periodicity, first_payment_date, account_id):
-        self.date = datetime.now()
+    def __init__(self, destination_card, amount, periodicity, first_payment_date: datetime, account_id):
         self.destination_card = destination_card
         self.amount = amount
         self.periodicity = periodicity
@@ -28,7 +27,7 @@ class RegularTransferModel(db.Model):
             'destinationCard': self.destination_card,
             'amount': self.amount,
             'periodicity': self.periodicity,
-            'firstPaymentDate': self.first_payment_date
+            'firstPaymentDate': self.first_payment_date.isoformat()
         }
 
     @classmethod
