@@ -27,12 +27,18 @@ class Transfer(Resource):
             return {"message": "not enough money on account"}
         if not AccountModel.is_card_valid(transfer_schema.destinationCard):
             return {"message": "invalid destination card"}
-        destination_account: AccountModel = AccountModel.get_by_card(transfer_schema.destinationCard)
-        account.balance -= transfer_schema.amount
-        destination_account.balance += transfer_schema.amount
-        transfer = TransferModel(transfer_schema.destinationCard, transfer_schema.amount, account.id)
-        transfer.save_to_db()
-        return transfer.json()
+        return None
+        # return self.make_transfer(get_jwt_identity(), transfer_schema.destinationCard, transfer_schema.amount).json()
+
+    # @staticmethod
+    # def make_transfer(account_id, destination_card, amount) -> TransferModel:
+    #     account = AccountModel.get_by_id(account_id)
+    #     destination_account: AccountModel = AccountModel.get_by_card(destination_card)
+    #     account.balance -= amount
+    #     destination_account.balance += amount
+    #     date = datetime.now()
+    #     transfer = TransferModel(date, destination_card, amount, account.id)
+    #     transfer.save_to_db()
 
 
 class Transfers(Resource):

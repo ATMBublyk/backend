@@ -1,25 +1,35 @@
-from datetime import datetime
-
-
-class RegularTransfer:
-    def __init__(self,  destination_card: str, amount: int, periodicity, first_payment_date: datetime):
-        self._destination_card = destination_card
-        self._amount = amount
-        self._periodicity = periodicity
-        self._first_payment_date = first_payment_date
-
-    @property
-    def destination_card(self):
-        return self._destination_card
-
-    @property
-    def amount(self):
-        return self._amount
-
-    @property
-    def periodicity(self):
-        return self._periodicity
-
-    @property
-    def first_payment_date(self):
-        return self._first_payment_date
+# import threading
+# import time
+# from datetime import datetime, timedelta
+# from dateutil.relativedelta import relativedelta
+#
+# from resources.transfer import Transfer
+#
+# class RegularTransfer:
+#     def __init__(self, account_id: int, destination_card: str, amount: int, periodicity: str, first_payment_date: datetime):
+#         self._account_id = account_id
+#         self._destination_card = destination_card
+#         self._amount = amount
+#         self._periodicity = periodicity
+#         self._first_payment_date = first_payment_date
+#         self.next_payment_date = first_payment_date
+#         thread = threading.Thread(target=self.start)
+#         thread.start()
+#
+#     def start(self):
+#         while True:
+#             current_date = datetime.now()
+#             if self.next_payment_date.date() == current_date.date():
+#                 Transfer.make_transfer(self._account_id, self._destination_card, self._amount)
+#                 if self._periodicity == 'everyday':
+#                     self.next_payment_date += timedelta(days=1)
+#                 elif self._periodicity == 'weekly':
+#                     self.next_payment_date += timedelta(days=7)
+#                 elif self._periodicity == 'monthly':
+#                     self.next_payment_date += relativedelta(months=1)
+#                 elif self._periodicity == 'yearly':
+#                     self.next_payment_date += relativedelta(years=1)
+#                 else:
+#                     raise Exception('incorrect periodicity')
+#             time.sleep(43200)
+#

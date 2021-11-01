@@ -11,6 +11,7 @@ flask-pydantic = "*"
 marshmallow = "*"
 flask-sqlalchemy = "*"
 flask-jwt-extended = "*"
+python-dateutil = "*"
 
 [dev-packages]
 

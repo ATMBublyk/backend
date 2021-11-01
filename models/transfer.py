@@ -13,8 +13,8 @@ class TransferModel(db.Model):
     account = db.relationship('AccountModel')
     account_id = db.Column(db.Integer, db.ForeignKey('accounts.id'))
 
-    def __init__(self, destination_card, amount, account_id):
-        self.date = datetime.now()
+    def __init__(self, date: datetime, destination_card, amount, account_id):
+        self.date = date
         self.destination_card = destination_card
         self.amount = amount
         self.account_id = account_id
