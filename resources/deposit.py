@@ -17,7 +17,7 @@ class DepositSchema(BaseModel):
 
 class Deposit(Resource):
     @jwt_required()
-    def post(self):  # todo surpluses
+    def post(self):
         account: AccountModel = AccountModel.get_by_id(get_jwt_identity())
         try:
             deposit_schema: DepositSchema = DepositSchema.parse_raw(json.dumps(request.get_json()))

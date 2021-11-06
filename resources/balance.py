@@ -1,12 +1,8 @@
 from flask_restful import Resource
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from pydantic import BaseModel
 
 from models.account import AccountModel
-
-
-class BalanceSchema(BaseModel):
-    id: float
+from models.bank import BankModel
 
 
 class Balance(Resource):
@@ -14,4 +10,11 @@ class Balance(Resource):
     def get(self):
         account: AccountModel = AccountModel.get_by_id(get_jwt_identity())
         balance = account.get_balance()
-        return {'balance': balance}
+        card_number = account.card_number
+        bank: BankModel = BankModel.get_by_id(account.bank_id)
+        bank_name = bank.name
+        return {
+            'cardNumber': card_number,
+            'balance': balance,
+            'bankName': bank_name
+        }
