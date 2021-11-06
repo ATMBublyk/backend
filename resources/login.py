@@ -30,4 +30,4 @@ class Login(Resource):
         except WrongPinException:
             return {"message": "invalid credentials"}
         access_token = create_access_token(identity=id)
-        return {'access_token': access_token}, 200
+        return {'accessToken': access_token}, 200
