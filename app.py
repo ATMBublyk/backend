@@ -43,6 +43,7 @@ def check_if_token_in_blacklist(decrypted_token):
     return b
 
 
+
 # closed
 api.add_resource(BankRegister, '/bank', '/bank/<int:id>')
 api.add_resource(AccountRegister, '/account', '/account/<int:id>')
