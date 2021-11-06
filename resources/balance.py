@@ -11,7 +11,7 @@ class Balance(Resource):
         account: AccountModel = AccountModel.get_by_id(get_jwt_identity())
         balance = account.get_balance()
         card_number = account.card_number
-        bank: BankModel = BankModel.get_by_id(account.bank_id)
+        bank = BankModel.get_by_id(account.bank_id)
         bank_name = bank.name
         return {
             'cardNumber': card_number,
