@@ -7,6 +7,9 @@ from resources.balance import Balance
 from resources.deposit import Deposit, Deposits
 from resources.withdrawal import Withdrawal, Withdrawals
 from resources.transfer import Transfer, Transfers
+from resources.regular_transfer import RegularTransfer, RegularTransfers
+from resources.surpluses_account import SurplusesAccount
+from resources.register import AccountRegister, BankRegister
 from db import db
 from models.bank import BankModel
 from models.account import AccountModel
@@ -24,14 +27,12 @@ api = Api(app)
 @app.before_first_request
 def create_tables():
     db.create_all()
-    bank = BankModel('Privat')
-    bank.save_to_db()
-    account = AccountModel('Yarema', '5167', '1234', bank.id, 1544)
-    account.save_to_db()
-    account2 = AccountModel('Nikmas', '5168', '4321', bank.id, 3000)
-    account2.save_to_db()
 
 
+# closed
+api.add_resource(BankRegister, '/bank', '/bank/<int:id>')
+api.add_resource(AccountRegister, '/account', '/account/<int:id>')
+# open
 api.add_resource(Login, '/login')
 api.add_resource(Balance, '/balance')
 api.add_resource(Deposit, '/deposit')
@@ -40,6 +41,9 @@ api.add_resource(Withdrawal, '/withdrawal')
 api.add_resource(Withdrawals, '/withdrawals')
 api.add_resource(Transfer, '/transfer')
 api.add_resource(Transfers, '/transfers')
+api.add_resource(RegularTransfer, '/regular-transfer', '/regular-transfer/<int:id>')
+api.add_resource(RegularTransfers, '/regular-transfers')
+api.add_resource(SurplusesAccount, '/surpluses-account')
 
 jwt = JWTManager(app)
 

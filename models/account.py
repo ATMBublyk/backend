@@ -9,26 +9,34 @@ class AccountModel(db.Model):
     pin = db.Column(db.String)
     card_number = db.Column(db.String)
     balance = db.Column(db.Float)
-    surplus_card = db.Column(db.String)
-    max_surplus_balance = db.Column(db.Integer)
     deposits = db.relationship('DepositModel', lazy='dynamic')
     withdrawals = db.relationship('WithdrawalModel', lazy='dynamic')
     transfers = db.relationship('TransferModel', lazy='dynamic')
-    # regular_transfers = db.relationship('RegularTransferModel', lazy='dynamic')
-    bank = db.relationship('BankModel')
+    regular_transfers = db.relationship('RegularTransferModel', lazy='dynamic')
     bank_id = db.Column(db.Integer, db.ForeignKey('banks.id'))
 
-    def __init__(self, name, card_number, pin, bank_id, balance=0, surplus_card="", max_surplus_balance=0):
+    # surpluses-account
+    surpluses_destination_card = db.Column(db.String)
+    surpluses_max_balance = db.Column(db.Float)
+    have_surpluses_account = db.Column(db.Boolean)
+
+    def __init__(self, name, card_number, pin, bank_id, balance=0, surpluses_destination_card="",
+                 surpluses_max_balance=0, have_surpluses_account=False):
         self.name = name
         self.pin = pin
         self.card_number = card_number
         self.bank_id = bank_id
         self.balance = balance
-        self.surplus_card = surplus_card
-        self.max_surplus_balance = max_surplus_balance
+        self.surpluses_destination_card = surpluses_destination_card
+        self.surpluses_max_balance = surpluses_max_balance
+        self.have_surpluses_account = have_surpluses_account
 
     def save_to_db(self):
         db.session.add(self)
+        db.session.commit()
+
+    def delete_from_db(self):
+        db.session.delete(self)
         db.session.commit()
 
     def get_balance(self):
@@ -45,6 +53,23 @@ class AccountModel(db.Model):
     def get_transfers(self):
         transfers = [transfer.json() for transfer in self.transfers.all()]
         return transfers
+
+    def get_regular_transfer_by_id(self, _id):
+        for regular_transfer in self.regular_transfers.all():
+            if regular_transfer.id == _id:
+                return regular_transfer
+
+    def get_regular_transfers(self):
+        regular_transfers = [regular_transfer.json() for regular_transfer in self.regular_transfers.all()]
+        return regular_transfers
+
+    def json(self):
+        return {
+            "name": self.name,
+            "cardNumber": self.card_number,
+            "balance": self.balance,
+            "bankId": self.bank_id
+        }
 
     @classmethod
     def is_card_valid(cls, card_number):

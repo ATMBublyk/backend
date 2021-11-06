@@ -32,8 +32,12 @@ class RegularTransferModel(db.Model):
 
     @classmethod
     def get_by_id(cls, _id):
-        return cls.query.find_by(id=_id).first()
+        return cls.query.filter_by(id=_id).first()
 
     def save_to_db(self):
         db.session.add(self)
+        db.session.commit()
+
+    def delete_from_db(self):
+        db.session.delete(self)
         db.session.commit()

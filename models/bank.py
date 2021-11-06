@@ -15,6 +15,16 @@ class BankModel(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def delete_from_db(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def json(self):
+        return {
+            "id": self.id,
+            "name": self.name
+        }
+
     def start_session(self, card_number, pin):
         for account in self.accounts.all():
             if account.card_number == card_number and account.pin == pin:
@@ -26,6 +36,9 @@ class BankModel(db.Model):
         for account in self.accounts.all():
             if account.id == _id:
                 return account.balance
+
+    def has_accounts(self):
+        return self.accounts.all() is not None
 
     @classmethod
     def get_by_name(cls, name):

@@ -8,6 +8,7 @@ from pydantic import BaseModel, ValidationError
 from models.bank import BankModel
 from models.account import AccountModel
 from models.deposit import DepositModel
+from resources.transfer import Transfer
 
 
 class DepositSchema(BaseModel):
@@ -23,6 +24,9 @@ class Deposit(Resource):
         except ValidationError:
             return {"message": "invalid arguments"}, 400
         account.balance += deposit_schema.amount
+        if account.have_surpluses_account and (account.balance > account.surpluses_max_balance):
+            surpluses_amount = account.balance - account.surpluses_max_balance
+            Transfer.make_transfer(account.id, account.surpluses_destination_card, surpluses_amount, False, True)
         deposit = DepositModel(datetime.now(), deposit_schema.amount, account.id)
         deposit.save_to_db()
         return deposit.json()
