@@ -41,7 +41,9 @@ def create_tables():
 
 @jwt.token_in_blocklist_loader
 def check_if_token_in_blacklist(decrypted_token):
-    return decrypted_token['jti'] in BLACKLIST
+    b = decrypted_token['jti'] in BLACKLIST
+    return b
+
 
 
 # closed
