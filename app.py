@@ -19,16 +19,14 @@ from db import db
 from models.bank import BankModel
 from models.account import AccountModel
 
-
+ACCESS_EXPIRES = timedelta(hours=1)
 app = Flask(__name__)
 cors = CORS(app, resources={r"*": {"origins": "http://localhost"}})
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
-app.config['JWT_BLACKLIST_ENABLED'] = True
-app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
-# app.config['JWT_ACCESS_TOKEN_EXPIRES'] = ACCESS_EXPIRES
-app.secret_key = '1234'
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = ACCESS_EXPIRES
+app.config['JWT_SECRET_KEY'] = '1234'
 api = Api(app)
 
 jwt = JWTManager(app)
@@ -40,10 +38,8 @@ def create_tables():
 
 
 @jwt.token_in_blocklist_loader
-def check_if_token_in_blacklist(decrypted_token):
-    b = decrypted_token['jti'] in BLACKLIST
-    return b
-
+def check_if_token_in_blacklist(jwt_headers, jwt_payload):
+    return jwt_payload['jti'] in BLACKLIST
 
 
 # closed
@@ -63,12 +59,15 @@ api.add_resource(RegularTransfer, '/regular-transfer', '/regular-transfer/<int:i
 api.add_resource(RegularTransfers, '/regular-transfers')
 api.add_resource(SurplusesAccount, '/surpluses-account')
 
-jwt = JWTManager(app)
-
 
 @jwt.additional_claims_loader
 def add_claims_loader(identity):
     return {'_id': True}
+
+
+@jwt.revoked_token_loader
+def revoked_token(arg1, arg2):
+    return {"message": "token has been revoked"}
 
 
 @jwt.expired_token_loader
