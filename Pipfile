@@ -12,6 +12,7 @@ marshmallow = "*"
 flask-sqlalchemy = "*"
 flask-jwt-extended = "*"
 python-dateutil = "*"
+redis = "*"
 
 [dev-packages]
 

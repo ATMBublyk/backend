@@ -1,8 +1,12 @@
+from datetime import timedelta
+
 from flask import Flask, jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 
+from blacklist import BLACKLIST
 from resources.login import Login
+from resources.logout import Logout
 from resources.balance import Balance
 from resources.deposit import Deposit, Deposits
 from resources.withdrawal import Withdrawal, Withdrawals
@@ -14,14 +18,18 @@ from db import db
 from models.bank import BankModel
 from models.account import AccountModel
 
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
 app.config['JWT_BLACKLIST_ENABLED'] = True
 app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
+# app.config['JWT_ACCESS_TOKEN_EXPIRES'] = ACCESS_EXPIRES
 app.secret_key = '1234'
 api = Api(app)
+
+jwt = JWTManager(app)
 
 
 @app.before_first_request
@@ -29,11 +37,17 @@ def create_tables():
     db.create_all()
 
 
+@jwt.token_in_blocklist_loader
+def check_if_token_in_blacklist(decrypted_token):
+    return decrypted_token['jti'] in BLACKLIST
+
+
 # closed
 api.add_resource(BankRegister, '/bank', '/bank/<int:id>')
 api.add_resource(AccountRegister, '/account', '/account/<int:id>')
 # open
 api.add_resource(Login, '/login')
+api.add_resource(Logout, '/logout')
 api.add_resource(Balance, '/balance')
 api.add_resource(Deposit, '/deposit')
 api.add_resource(Deposits, '/deposits')
