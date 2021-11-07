@@ -5,7 +5,7 @@ from models.account import AccountModel
 from models.bank import BankModel
 
 
-class Balance(Resource):
+class CardInfo(Resource):
     @jwt_required()
     def get(self):
         account: AccountModel = AccountModel.get_by_id(get_jwt_identity())

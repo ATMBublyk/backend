@@ -8,7 +8,7 @@ from flask_jwt_extended import JWTManager
 from blacklist import BLACKLIST
 from resources.login import Login
 from resources.logout import Logout
-from resources.balance import Balance
+from resources.card_info import CardInfo
 from resources.deposit import Deposit, Deposits
 from resources.withdrawal import Withdrawal, Withdrawals
 from resources.transfer import Transfer, Transfers
@@ -48,7 +48,7 @@ api.add_resource(AccountRegister, '/account', '/account/<int:id>')
 # open
 api.add_resource(Login, '/login')
 api.add_resource(Logout, '/logout')
-api.add_resource(Balance, '/balance')
+api.add_resource(CardInfo, '/card-info')
 api.add_resource(Deposit, '/deposit')
 api.add_resource(Deposits, '/deposits')
 api.add_resource(Withdrawal, '/withdrawal')
