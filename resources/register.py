@@ -27,7 +27,11 @@ class AccountRegister(Resource):
             account_register_schema: AccountRegisterSchema = AccountRegisterSchema.parse_raw(
                 json.dumps(request.get_json()))
         except ValidationError:
-            return {"message": "invalid arguments"}
+            return {"message": "invalid arguments"}, 400
+        if AccountModel.get_by_card(account_register_schema.cardNumber) is not None:
+            return {"message": f"user with {account_register_schema.cardNumber} card number exists"}, 400
+        if BankModel.get_by_id(account_register_schema.bankId) is None:
+            return {"message": f"there is no bank with id {account_register_schema.bankId}"}, 400
         account = AccountModel(account_register_schema.name, account_register_schema.cardNumber,
                                account_register_schema.pin, account_register_schema.bankId)
         account.save_to_db()
@@ -57,6 +61,8 @@ class BankRegister(Resource):
             bank_register_schema: BankRegisterSchema = BankRegisterSchema.parse_raw(json.dumps(request.get_json()))
         except ValidationError:
             return {"message": "invalid arguments"}, 400
+        if BankModel.get_by_id(bank_register_schema.name) is not None:
+            return {"message": f"bank with name {bank_register_schema.name} exists"}
         bank = BankModel(bank_register_schema.name)
         bank.save_to_db()
         return {"bankId": bank.id}, 201

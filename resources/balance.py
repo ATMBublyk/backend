@@ -14,6 +14,7 @@ class Balance(Resource):
         bank = BankModel.get_by_id(account.bank_id)
         bank_name = bank.name
         return {
+            'name': account.name,
             'cardNumber': card_number,
             'balance': balance,
             'bankName': bank_name
