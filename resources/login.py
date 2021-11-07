@@ -26,7 +26,7 @@ class Login(Resource):
         try:
             bank_id = AccountModel.get_bank_id(login_schema.cardNumber)
         except AttributeError:
-            return {"message": "account does not exist"}, 204
+            return {"message": "account does not exist"}, 400
         bank: BankModel = BankModel.get_by_id(bank_id)
         try:
             id = bank.start_session(login_schema.cardNumber, login_schema.pin)
