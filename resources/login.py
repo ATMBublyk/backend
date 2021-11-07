@@ -31,6 +31,6 @@ class Login(Resource):
         try:
             id = bank.start_session(login_schema.cardNumber, login_schema.pin)
         except WrongPinException:
-            return {"message": "invalid credentials"}
+            return {"message": "invalid credentials"}, 400
         access_token = create_access_token(identity=id, expires_delta=EXPIRES_DELTA)
         return {'accessToken': access_token}, 200
