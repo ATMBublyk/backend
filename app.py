@@ -1,4 +1,5 @@
 from datetime import timedelta
+import os
 
 from flask import Flask, jsonify
 from flask_cors import CORS
@@ -22,7 +23,7 @@ from models.account import AccountModel
 ACCESS_EXPIRES = timedelta(minutes=10)
 app = Flask(__name__)
 cors = CORS(app, resources={r"*": {"origins": "*"}})
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///data.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = ACCESS_EXPIRES
