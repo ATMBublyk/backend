@@ -54,7 +54,8 @@ class RegularTransfer(Resource):
         amount = regular_transfer_schema.amount
         destination_card = regular_transfer_schema.destinationCard
         first_payment_date_str = regular_transfer_schema.firstPaymentDate
-        json_error = self.validate_data(periodicity, amount, destination_card, first_payment_date_str)
+        json_error = self.validate_data(periodicity, amount, destination_card, first_payment_date_str,
+                                        account.card_number)
         if json_error is not None:
             return json_error
         first_payment_date = datetime.strptime(first_payment_date_str, "%Y-%m-%dT%H:%M:%S.%f")
@@ -79,7 +80,8 @@ class RegularTransfer(Resource):
         amount = regular_transfer_schema.amount
         destination_card = regular_transfer_schema.destinationCard
         first_payment_date_str = regular_transfer_schema.firstPaymentDate
-        json_error = self.validate_data(periodicity, amount, destination_card, first_payment_date_str)
+        json_error = self.validate_data(periodicity, amount, destination_card, first_payment_date_str,
+                                        account.card_number)
         if json_error is not None:
             return json_error
         first_payment_date = datetime.strptime(first_payment_date_str, "%Y-%m-%dT%H:%M:%S.%f")
