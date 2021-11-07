@@ -19,7 +19,7 @@ from db import db
 from models.bank import BankModel
 from models.account import AccountModel
 
-ACCESS_EXPIRES = timedelta(hours=1)
+ACCESS_EXPIRES = timedelta(minutes=10)
 app = Flask(__name__)
 cors = CORS(app, resources={r"*": {"origins": "http://localhost"}})
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'

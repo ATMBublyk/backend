@@ -1,4 +1,5 @@
 import json
+from datetime import timedelta
 
 from flask_restful import Resource, request
 from flask_jwt_extended import create_access_token
@@ -7,6 +8,8 @@ from pydantic import BaseModel, ValidationError
 from exceptions.exceptions import WrongPinException
 from models.bank import BankModel
 from models.account import AccountModel
+
+EXPIRES_DELTA = timedelta(minutes=10)
 
 
 class LoginSchema(BaseModel):
@@ -29,5 +32,5 @@ class Login(Resource):
             id = bank.start_session(login_schema.cardNumber, login_schema.pin)
         except WrongPinException:
             return {"message": "invalid credentials"}
-        access_token = create_access_token(identity=id)
+        access_token = create_access_token(identity=id, expires_delta=EXPIRES_DELTA)
         return {'accessToken': access_token}, 200
