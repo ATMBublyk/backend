@@ -61,7 +61,7 @@ class BankRegister(Resource):
             bank_register_schema: BankRegisterSchema = BankRegisterSchema.parse_raw(json.dumps(request.get_json()))
         except ValidationError:
             return {"message": "invalid arguments"}, 400
-        if BankModel.get_by_id(bank_register_schema.name) is not None:
+        if BankModel.get_by_name(bank_register_schema.name) is not None:
             return {"message": f"bank with name {bank_register_schema.name} exists"}
         bank = BankModel(bank_register_schema.name)
         bank.save_to_db()
