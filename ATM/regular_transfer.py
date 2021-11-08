@@ -1,12 +1,10 @@
-import threading
-import time
-
+import asyncio
 from datetime import datetime, timedelta
+
 from dateutil.relativedelta import relativedelta
 
-from resources.transfer import Transfer
-from models.transfer import TransferModel
 from models.account import AccountModel
+from resources.transfer import Transfer
 
 
 class RegularTransfer:
@@ -19,11 +17,8 @@ class RegularTransfer:
         self._first_payment_date = first_payment_date
         self.next_payment_date = first_payment_date
         self._account = AccountModel.get_by_id(account_id)
-        # thread = threading.Thread(target=self.start)  # todo session
-        # thread.start()
-        self.start()
 
-    def start(self):
+    async def start(self):
         while True:
             current_date = datetime.now()
             if self.next_payment_date.date() == current_date.date():
@@ -38,5 +33,4 @@ class RegularTransfer:
                     self.next_payment_date += relativedelta(years=1)
                 else:
                     raise Exception('incorrect periodicity')
-            break
-            # time.sleep(43200)
+            await asyncio.sleep(60)

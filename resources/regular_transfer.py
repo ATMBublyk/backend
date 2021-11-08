@@ -12,7 +12,7 @@ from ATM.regular_transfer import RegularTransfer as RegularTransferAtm
 
 class RegularTransferSchema(BaseModel):
     destinationCard: str
-    amount: int
+    amount: float
     periodicity: str
     firstPaymentDate: str
 
