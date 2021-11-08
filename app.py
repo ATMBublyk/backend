@@ -1,29 +1,27 @@
-from datetime import timedelta
 import os
+from datetime import timedelta
 
 from flask import Flask, jsonify
 from flask_cors import CORS
-from flask_restful import Api
 from flask_jwt_extended import JWTManager
+from flask_restful import Api
 
 from blacklist import BLACKLIST
-from resources.login import Login
-from resources.logout import Logout
+from db import db
 from resources.card_info import CardInfo
 from resources.deposit import Deposit, Deposits
-from resources.withdrawal import Withdrawal, Withdrawals
-from resources.transfer import Transfer, Transfers
+from resources.login import Login
+from resources.logout import Logout
+from resources.register import AccountRegister, BankRegister
 from resources.regular_transfer import RegularTransfer, RegularTransfers
 from resources.surpluses_account import SurplusesAccount
-from resources.register import AccountRegister, BankRegister
-from db import db
-from models.bank import BankModel
-from models.account import AccountModel
+from resources.transfer import Transfer, Transfers
+from resources.withdrawal import Withdrawal, Withdrawals
 
 ACCESS_EXPIRES = timedelta(minutes=10)
 app = Flask(__name__)
 cors = CORS(app, resources={r"*": {"origins": "*"}})
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI', 'sqlite:///data.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = ACCESS_EXPIRES

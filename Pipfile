@@ -15,6 +15,7 @@ python-dateutil = "*"
 redis = "*"
 flask-cors = "*"
 uwsgi = "*"
+psycopg2 = '*'
 
 [dev-packages]
 
