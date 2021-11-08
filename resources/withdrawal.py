@@ -25,7 +25,7 @@ class Withdrawal(Resource):
         if account.balance < withdrawal_schema.amount:
             return {"message": "not enough money for this transaction"}, 403
         account.balance -= withdrawal_schema.amount
-        withdrawal = WithdrawalModel(withdrawal_schema.amount, datetime.now(), account.id)
+        withdrawal = WithdrawalModel(withdrawal_schema.amount, datetime.utcnow(), account.id)
         withdrawal.save_to_db()
         return withdrawal.json()
 

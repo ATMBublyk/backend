@@ -97,7 +97,7 @@ class RegularTransfer(Resource):
             first_payment_date = datetime.strptime(first_payment_date_str, "%Y-%m-%dT%H:%M:%S.%f")
         except ValueError:
             return {"message": "incorrect date format"}, 400
-        if first_payment_date < datetime.now():
+        if first_payment_date < datetime.utcnow():
             return {"message": "invalid date: you should set date in the future"}, 400
         if not AccountModel.is_card_valid(destination_card):
             return {"message": "invalid destination card"}, 400

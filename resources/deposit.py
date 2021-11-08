@@ -27,7 +27,7 @@ class Deposit(Resource):
         if account.have_surpluses_account and (account.balance > account.surpluses_max_balance):
             surpluses_amount = account.balance - account.surpluses_max_balance
             Transfer.make_transfer(account.id, account.surpluses_destination_card, surpluses_amount, False, True)
-        deposit = DepositModel(datetime.now(), deposit_schema.amount, account.id)
+        deposit = DepositModel(datetime.utcnow(), deposit_schema.amount, account.id)
         deposit.save_to_db()
         return deposit.json()
 

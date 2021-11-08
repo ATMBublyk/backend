@@ -46,7 +46,7 @@ class Transfer(Resource):
                 Transfer.make_transfer(destination_account.id, destination_account.surpluses_destination_card,
                                        surpluses_amount, False, True)
                 destination_account.balance = destination_account.surpluses_max_balance
-        date = datetime.now()
+        date = datetime.utcnow()
         transfer = TransferModel(date, card, amount, account.id, is_regular, is_auto, True)
         destination_transfer = TransferModel(date, account.card_number, amount, destination_account.id, False, False,
                                              False)
