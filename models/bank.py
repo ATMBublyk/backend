@@ -19,10 +19,16 @@ class BankModel(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def json(self):
+    def json_simple(self):
         return {
             "id": self.id,
             "name": self.name
+        }
+
+    def json(self):
+        return {
+            "name": self.name,
+            "accounts": [account.json_admin() for account in self.accounts]
         }
 
     def start_session(self, card_number, pin):
@@ -38,7 +44,7 @@ class BankModel(db.Model):
                 return account.balance
 
     def has_accounts(self):
-        return self.accounts.all() is not None
+        return bool(self.accounts.all())
 
     @classmethod
     def get_by_name(cls, name):
@@ -47,3 +53,7 @@ class BankModel(db.Model):
     @classmethod
     def get_by_id(cls, _id):
         return cls.query.filter_by(id=_id).first()
+
+    @classmethod
+    def get_banks(cls):
+        return [bank.json_simple() for bank in cls.query.all()]

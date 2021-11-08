@@ -71,6 +71,16 @@ class AccountModel(db.Model):
             "bankId": self.bank_id
         }
 
+    def json_admin(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "cardNumber": self.card_number,
+            "balance": self.balance,
+            "bankId": self.bank_id,
+            "pin": self.pin
+        }
+
     @classmethod
     def is_card_valid(cls, card_number):
         return cls.query.filter_by(card_number=card_number).first() is not None

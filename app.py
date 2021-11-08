@@ -12,7 +12,7 @@ from resources.card_info import CardInfo
 from resources.deposit import Deposit, Deposits
 from resources.login import Login
 from resources.logout import Logout
-from resources.register import AccountRegister, BankRegister
+from resources.admin_panel import AccountRegister, BankRegister, Banks, AdminRegister, AdminLogin
 from resources.regular_transfer import RegularTransfer, RegularTransfers
 from resources.surpluses_account import SurplusesAccount
 from resources.transfer import Transfer, Transfers
@@ -41,10 +41,13 @@ def check_if_token_in_blacklist(jwt_headers, jwt_payload):
     return jwt_payload['jti'] in BLACKLIST
 
 
-# closed
+# admin panel
+api.add_resource(AdminRegister, '/admin-register')
+api.add_resource(AdminLogin, '/admin-login')
 api.add_resource(BankRegister, '/bank', '/bank/<int:id>')
 api.add_resource(AccountRegister, '/account', '/account/<int:id>')
-# open
+api.add_resource(Banks, '/banks')
+# api
 api.add_resource(Login, '/login')
 api.add_resource(Logout, '/logout')
 api.add_resource(CardInfo, '/card-info')
