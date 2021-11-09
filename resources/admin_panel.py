@@ -42,10 +42,10 @@ class AdminLogin(Resource):
         if not admins:
             return {"message": "there is no admins"}, 400
         admin: AdminModel = admins[0]
-        if admin_login_schema.login == admin.login or admin_login_schema.password == admin.password:
+        if admin_login_schema.login == admin.login and admin_login_schema.password == admin.password:
             return {"accessToken": create_access_token(1, expires_delta=EXPIRES_DELTA)}
         else:
-            return {"message" "invalid credentials"}, 400
+            return {"message": "invalid credentials"}, 400
 
 
 class Banks(Resource):

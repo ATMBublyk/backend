@@ -7,7 +7,7 @@ from pydantic import BaseModel, ValidationError
 
 from models.account import AccountModel
 from models.regular_transfer import RegularTransferModel
-from ATM.regular_transfer import RegularTransfer as RegularTransferAtm
+from ATM.regular_transfer import RegularTransferAtm
 
 
 class RegularTransferSchema(BaseModel):
@@ -106,11 +106,11 @@ class RegularTransfer(Resource):
         if sender_card == destination_card:
             return {"message": "you can't send money for your own card"}, 400
         if not cls.validate_periodicity(periodicity):
-            return {"message": f"there is no {periodicity} periodicity. Use everyday, weekly, monthly or yearly"}, 400
+            return {"message": f"there is no {periodicity} periodicity. Use everyday, weekly, monthly or annually"}, 400
 
     @staticmethod
     def validate_periodicity(periodicity) -> bool:
-        valid_periodicities = ['everyday', 'weekly', 'monthly', 'yearly']
+        valid_periodicities = ['everyday', 'weekly', 'monthly', 'annually']
         is_valid = False
         for valid_periodicity in valid_periodicities:
             if periodicity == valid_periodicity:

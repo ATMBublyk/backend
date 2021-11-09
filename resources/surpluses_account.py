@@ -7,7 +7,6 @@ from pydantic import BaseModel, ValidationError
 
 from models.account import AccountModel
 from models.regular_transfer import RegularTransferModel
-from ATM.regular_transfer import RegularTransfer as RegularTransferAtm
 
 
 class SurplusesAccountSchema(BaseModel):
