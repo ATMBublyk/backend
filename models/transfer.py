@@ -11,7 +11,7 @@ class TransferModel(db.Model):
     card = db.Column(db.String)
     amount = db.Column(db.Float)
     is_regular = db.Column(db.Boolean)
-    is_auto = db.Column(db.Boolean)
+    is_auto = db.Column(db.Boolean)  # for surpluses
     is_my_payment = db.Column(db.Boolean)
     account = db.relationship('AccountModel')
     account_id = db.Column(db.Integer, db.ForeignKey('accounts.id'))
