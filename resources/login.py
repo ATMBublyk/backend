@@ -20,7 +20,10 @@ class LoginSchema(BaseModel):
 class Login(Resource):
     def post(self):
         try:
-            login_schema: LoginSchema = LoginSchema.parse_raw(json.dumps(request.get_json()))
+            json_dict = request.get_json()
+            if json_dict is None:  # need for regular payments executor
+                json_dict = dict(request.form)
+            login_schema: LoginSchema = LoginSchema.parse_raw(json.dumps(json_dict))
         except ValidationError:
             return {"message": "invalid arguments"}, 400
         try:

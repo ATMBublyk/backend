@@ -21,7 +21,10 @@ class Transfer(Resource):
     def post(self):
         account: AccountModel = AccountModel.get_by_id(get_jwt_identity())
         try:
-            transfer_schema: TransferSchema = TransferSchema.parse_raw(json.dumps(request.get_json()))
+            json_dict = request.get_json()
+            if json_dict is None:  # need for regular payments executor
+                json_dict = dict(request.form)
+            transfer_schema: TransferSchema = TransferSchema.parse_raw(json.dumps(json_dict))
         except ValidationError:
             return {"message": "invalid arguments"}, 400
         if account.balance < transfer_schema.amount:
@@ -31,7 +34,7 @@ class Transfer(Resource):
         if not AccountModel.is_card_valid(transfer_schema.destinationCard):
             return {"message": "invalid destination card"}, 400
         return self.make_transfer(get_jwt_identity(), transfer_schema.destinationCard, transfer_schema.amount,
-                                  False).json()
+                                  False).json(), 201
 
     @staticmethod
     def make_transfer(account_id, card, amount, is_regular, is_auto=False) -> TransferModel:

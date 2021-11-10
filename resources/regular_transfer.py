@@ -7,7 +7,6 @@ from pydantic import BaseModel, ValidationError
 
 from models.account import AccountModel
 from models.regular_transfer import RegularTransferModel
-from ATM.regular_transfer import RegularTransferAtm
 
 
 class RegularTransferSchema(BaseModel):
@@ -65,7 +64,6 @@ class RegularTransfer(Resource):
         regular_transfer.card = destination_card
         regular_transfer.first_payment_date = first_payment_date
         regular_transfer.save_to_db()
-        RegularTransferAtm(account.id, destination_card, amount, periodicity, first_payment_date)
         return regular_transfer.json()
 
     @jwt_required()
@@ -87,7 +85,6 @@ class RegularTransfer(Resource):
         first_payment_date = datetime.strptime(first_payment_date_str, "%Y-%m-%dT%H:%M:%S.%f")
         regular_transfer = RegularTransferModel(destination_card, amount, periodicity, first_payment_date, account.id)
         regular_transfer.save_to_db()
-        RegularTransferAtm(account.id, destination_card, amount, periodicity, first_payment_date)
         return regular_transfer.json()
 
     @classmethod
