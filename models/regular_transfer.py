@@ -12,6 +12,7 @@ class RegularTransferModel(db.Model):
     amount = db.Column(db.Float)
     periodicity = db.Column(db.String)
     first_payment_date = db.Column(db.DateTime)
+    next_payment_date = db.Column(db.DateTime)
     account = db.relationship('AccountModel')
     account_id = db.Column(db.Integer, db.ForeignKey('accounts.id'))
 
@@ -24,6 +25,7 @@ class RegularTransferModel(db.Model):
         self.amount = amount
         self.periodicity = periodicity
         self.first_payment_date = first_payment_date
+        self.next_payment_date = first_payment_date
         self.account_id = account_id
         account: AccountModel = AccountModel.get_by_id(account_id)
         self.card = account.card_number
