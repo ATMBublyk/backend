@@ -58,10 +58,10 @@ class RegularTransfer(Resource):
         if json_error is not None:
             return json_error
         first_payment_date = datetime.strptime(first_payment_date_str, "%Y-%m-%dT%H:%M:%S.%f")
-        regular_transfer = RegularTransferModel.get_by_id(id)
+        regular_transfer: RegularTransferModel = RegularTransferModel.get_by_id(id)
         regular_transfer.periodicity = periodicity
         regular_transfer.amount = amount
-        regular_transfer.card = destination_card
+        regular_transfer.destination_card = destination_card
         regular_transfer.first_payment_date = first_payment_date
         regular_transfer.save_to_db()
         return regular_transfer.json()
