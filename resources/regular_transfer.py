@@ -30,7 +30,7 @@ class RegularTransfer(Resource):
         try:
             regular_transfer = account.get_regular_transfer_by_id(id).json()
         except AttributeError:
-            return {"message": f"there is no regular transfer with id {id}"}
+            return {"message": f"There is no regular payment with id {id}."}
         return regular_transfer
 
     @jwt_required()
@@ -48,7 +48,7 @@ class RegularTransfer(Resource):
             regular_transfer_schema: RegularTransferSchema = RegularTransferSchema.parse_raw(
                 json.dumps(request.get_json()))
         except ValidationError:
-            return {"message": "invalid arguments"}, 400
+            return {"message": "Invalid arguments."}, 400
         periodicity = regular_transfer_schema.periodicity
         amount = regular_transfer_schema.amount
         destination_card = regular_transfer_schema.destinationCard
@@ -73,7 +73,7 @@ class RegularTransfer(Resource):
             regular_transfer_schema: RegularTransferSchema = RegularTransferSchema.parse_raw(
                 json.dumps(request.get_json()))
         except ValidationError:
-            return {"message": "invalid arguments"}, 400
+            return {"message": "Invalid arguments."}, 400
         periodicity = regular_transfer_schema.periodicity
         amount = regular_transfer_schema.amount
         destination_card = regular_transfer_schema.destinationCard
@@ -93,17 +93,17 @@ class RegularTransfer(Resource):
         try:
             first_payment_date = datetime.strptime(first_payment_date_str, "%Y-%m-%dT%H:%M:%S.%f")
         except ValueError:
-            return {"message": "incorrect date format"}, 400
+            return {"message": "Incorrect date format."}, 400
         if first_payment_date < datetime.utcnow():
-            return {"message": "invalid date: you should set date in the future"}, 400
+            return {"message": "Invalid date: you should set the future date."}, 400
         if not AccountModel.is_card_valid(destination_card):
-            return {"message": "invalid destination card"}, 400
+            return {"message": "Invalid destination card."}, 400
         if amount <= 0:
-            return {"message": "amount can't be negative"}, 400
+            return {"message": "Amount can't be negative."}, 400
         if sender_card == destination_card:
-            return {"message": "you can't send money for your own card"}, 400
+            return {"message": "You can't send money to your own card."}, 400
         if not cls.validate_periodicity(periodicity):
-            return {"message": f"there is no {periodicity} periodicity. Use everyday, weekly, monthly or annually"}, 400
+            return {"message": f"There is no {periodicity} periodicity. Use everyday, weekly, monthly or annually."}, 400
 
     @staticmethod
     def validate_periodicity(periodicity) -> bool:

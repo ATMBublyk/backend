@@ -22,7 +22,7 @@ class Deposit(Resource):
         try:
             deposit_schema: DepositSchema = DepositSchema.parse_raw(json.dumps(request.get_json()))
         except ValidationError:
-            return {"message": "invalid arguments"}, 400
+            return {"message": "Invalid arguments."}, 400
         account.balance += deposit_schema.amount
         if account.have_surpluses_account and (account.balance > account.surpluses_max_balance):
             surpluses_amount = account.balance - account.surpluses_max_balance

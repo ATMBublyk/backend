@@ -27,13 +27,13 @@ class Transfer(Resource):
                 json_dict = dict(request.form)
             transfer_schema: TransferSchema = TransferSchema.parse_raw(json.dumps(json_dict))
         except ValidationError:
-            return {"message": "invalid arguments"}, 400
+            return {"message": "Invalid arguments."}, 400
         if account.balance < transfer_schema.amount:
-            return {"message": "not enough money on account"}, 400
+            return {"message": "Not enough money on the account."}, 400
         if account.card_number == transfer_schema.destinationCard:
-            return {"message": "you can't send money for your own card"}, 400
+            return {"message": "You can't send money to your own card."}, 400
         if not AccountModel.is_card_valid(transfer_schema.destinationCard):
-            return {"message": "invalid destination card"}, 400
+            return {"message": "Invalid destination card."}, 400
         return self.make_transfer(get_jwt_identity(), transfer_schema.destinationCard, transfer_schema.amount,
                                   transfer_schema.is_regular).json(), 201
 

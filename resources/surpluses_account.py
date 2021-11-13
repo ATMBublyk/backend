@@ -22,15 +22,15 @@ class SurplusesAccount(Resource):
             surpluses_account_schema: SurplusesAccountSchema = SurplusesAccountSchema.parse_raw(
                 json.dumps(request.get_json()))
         except ValidationError:
-            return {"message": "invalid arguments"}, 400
+            return {"message": "Invalid arguments."}, 400
         destination_card = surpluses_account_schema.destinationCard
         max_balance = surpluses_account_schema.maxBalance
         if max_balance <= 0:
-            return {"message": "max balance can't be negative or 0"}, 400
+            return {"message": "Max balance should be more than 0."}, 400
         if not AccountModel.is_card_valid(destination_card):
-            return {"message": "invalid destination card"}, 400
+            return {"message": "Invalid destination card."}, 400
         if account.card_number == surpluses_account_schema.destinationCard:
-            return {"message": "you can't send money for your own card"}, 400
+            return {"message": "You can't send money to your own card."}, 400
         account.surpluses_destination_card = destination_card
         account.surpluses_max_balance = max_balance
         account.have_surpluses_account = True
@@ -44,7 +44,7 @@ class SurplusesAccount(Resource):
     def get(self):
         account: AccountModel = AccountModel.get_by_id(get_jwt_identity())
         if not account.have_surpluses_account:
-            return {"message": "account don't have surpluses account"}, 400
+            return {"message": "Account doesn't have surpluses account."}, 400
         return {
             "destinationCard": account.surpluses_destination_card,
             "maxBalance": account.surpluses_max_balance
@@ -57,15 +57,15 @@ class SurplusesAccount(Resource):
             surpluses_account_schema: SurplusesAccountSchema = SurplusesAccountSchema.parse_raw(
                 json.dumps(request.get_json()))
         except ValidationError:
-            return {"message": "invalid arguments"}, 400
+            return {"message": "Invalid arguments."}, 400
         destination_card = surpluses_account_schema.destinationCard
         max_balance = surpluses_account_schema.maxBalance
         if max_balance <= 0:
-            return {"message": "max balance can't be negative or 0"}, 400
+            return {"message": "Max balance should be more than 0."}, 400
         if not AccountModel.is_card_valid(destination_card):
-            return {"message": "invalid destination card"}, 400
+            return {"message": "Invalid destination card."}, 400
         if account.card_number == surpluses_account_schema.destinationCard:
-            return {"message": "you can't send money for your own card"}, 400
+            return {"message": "You can't send money to your own card."}, 400
         account.surpluses_destination_card = destination_card
         account.surpluses_max_balance = max_balance
         account.have_surpluses_account = True
@@ -79,7 +79,7 @@ class SurplusesAccount(Resource):
     def delete(self):
         account: AccountModel = AccountModel.get_by_id(get_jwt_identity())
         if not account.have_surpluses_account:
-            return {"message": "this account don't have surpluses account"}, 400
+            return {"message": "This account doesn't have surpluses account."}, 400
         destination_card = account.surpluses_destination_card
         max_balance = account.surpluses_max_balance
         account.surpluses_destination_card = ""
