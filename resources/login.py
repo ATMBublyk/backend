@@ -25,15 +25,15 @@ class Login(Resource):
                 json_dict = dict(request.form)
             login_schema: LoginSchema = LoginSchema.parse_raw(json.dumps(json_dict))
         except ValidationError:
-            return {"message": "invalid arguments"}, 400
+            return {"message": "Invalid arguments."}, 400
         try:
             bank_id = AccountModel.get_bank_id(login_schema.cardNumber)
         except AttributeError:
-            return {"message": "account does not exist"}, 400
+            return {"message": "Account doesn't exist."}, 400
         bank: BankModel = BankModel.get_by_id(bank_id)
         try:
             id = bank.start_session(login_schema.cardNumber, login_schema.pin)
         except WrongPinException:
-            return {"message": "invalid credentials"}, 400
+            return {"message": "Invalid credentials."}, 400
         access_token = create_access_token(identity=id, expires_delta=EXPIRES_DELTA)
         return {'accessToken': access_token}, 200
