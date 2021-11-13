@@ -22,6 +22,8 @@ class Withdrawal(Resource):
             withdrawal_schema: WithdrawalSchema = WithdrawalSchema.parse_raw(json.dumps(request.get_json()))
         except ValidationError:
             return {"message": "invalid arguments"}, 400
+        if withdrawal_schema.amount is None:
+            return {"message": "amount can't be null"}, 400
         if account.balance < withdrawal_schema.amount:
             return {"message": "not enough money for this transaction"}, 403
         account.balance -= withdrawal_schema.amount

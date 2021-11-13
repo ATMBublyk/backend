@@ -23,11 +23,13 @@ class Transfer(Resource):
         account: AccountModel = AccountModel.get_by_id(get_jwt_identity())
         try:
             json_dict = request.get_json()
-            if json_dict is None:  # need for regular payments executor
+            if json_dict is None:  # for regular payments executor
                 json_dict = dict(request.form)
             transfer_schema: TransferSchema = TransferSchema.parse_raw(json.dumps(json_dict))
         except ValidationError:
             return {"message": "invalid arguments"}, 400
+        if transfer_schema.amount is None:
+            return {"message": "amount can't be null"}
         if account.balance < transfer_schema.amount:
             return {"message": "not enough money on account"}, 400
         if account.card_number == transfer_schema.destinationCard:

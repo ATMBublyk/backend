@@ -98,6 +98,8 @@ class RegularTransfer(Resource):
             return {"message": "invalid date: you should set date in the future"}, 400
         if not AccountModel.is_card_valid(destination_card):
             return {"message": "invalid destination card"}, 400
+        if amount is None:
+            return {"message": "amount can't be null"}, 400
         if amount <= 0:
             return {"message": "amount can't be negative"}, 400
         if sender_card == destination_card:
