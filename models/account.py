@@ -44,15 +44,18 @@ class AccountModel(db.Model):
 
     def get_deposits(self):
         deposits = [deposit.json() for deposit in self.deposits.all()]
-        return deposits
+        deposits_dict = {"deposits": deposits}
+        return deposits_dict
 
     def get_withdrawals(self):
         withdrawals = [withdrawal.json() for withdrawal in self.withdrawals.all()]
-        return withdrawals
+        withdrawals_dict = {"withdrawals": withdrawals}
+        return withdrawals_dict
 
     def get_transfers(self):
         transfers = [transfer.json() for transfer in self.transfers.all()]
-        return transfers
+        transfers_dict = {"transfers": transfers}
+        return transfers_dict
 
     def get_regular_transfer_by_id(self, _id):
         for regular_transfer in self.regular_transfers.all():
@@ -61,7 +64,8 @@ class AccountModel(db.Model):
 
     def get_regular_transfers(self):
         regular_transfers = [regular_transfer.json() for regular_transfer in self.regular_transfers.all()]
-        return regular_transfers
+        regular_transfers_dict = {"regularTransfers": regular_transfers}
+        return regular_transfers_dict
 
     def json(self):
         return {
