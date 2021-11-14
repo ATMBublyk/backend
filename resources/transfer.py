@@ -14,7 +14,7 @@ from models.transfer import TransferModel
 class TransferSchema(BaseModel):
     destinationCard: str
     amount: float
-    is_regular: bool
+    isRegular: bool
 
 
 class Transfer(Resource):
