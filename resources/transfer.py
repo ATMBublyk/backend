@@ -37,7 +37,7 @@ class Transfer(Resource):
         if not AccountModel.is_card_valid(transfer_schema.destinationCard):
             return {"message": "Invalid destination card."}, 400
         return self.make_transfer(get_jwt_identity(), transfer_schema.destinationCard, transfer_schema.amount,
-                                  transfer_schema.is_regular).json(), 201
+                                  transfer_schema.isRegular).json(), 201
 
     @staticmethod
     def make_transfer(account_id, card, amount, is_regular, is_auto=False) -> TransferModel:
