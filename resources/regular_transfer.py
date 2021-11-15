@@ -63,6 +63,7 @@ class RegularTransfer(Resource):
         regular_transfer.amount = amount
         regular_transfer.destination_card = destination_card
         regular_transfer.first_payment_date = first_payment_date
+        regular_transfer.next_payment_date = first_payment_date
         regular_transfer.save_to_db()
         return regular_transfer.json()
 

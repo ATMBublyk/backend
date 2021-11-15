@@ -26,7 +26,7 @@ class Deposit(Resource):
         except ValidationError:
             return {"message": "Invalid arguments."}, 400
         if deposit_schema.amount is None:
-            return {"message": "Amount can't be null."}
+            return {"message": "Amount can't be null."}, 400
         account.balance += deposit_schema.amount
         if account.have_surpluses_account and (account.balance > account.surpluses_max_balance):
             surpluses_amount = account.balance - account.surpluses_max_balance
