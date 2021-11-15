@@ -21,6 +21,8 @@ class Transfer(Resource):
     @jwt_required()
     def post(self):
         account: AccountModel = AccountModel.get_by_id(get_jwt_identity())
+        if account is None:
+            return {"message": "incorrect account id"}
         try:
             json_dict = request.get_json()
             if json_dict is None:  # for regular payments executor

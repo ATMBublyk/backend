@@ -19,6 +19,8 @@ class Deposit(Resource):
     @jwt_required()
     def post(self):
         account: AccountModel = AccountModel.get_by_id(get_jwt_identity())
+        if account is None:
+            return {"message": "incorrect account id"}
         try:
             deposit_schema: DepositSchema = DepositSchema.parse_raw(json.dumps(request.get_json()))
         except ValidationError:
