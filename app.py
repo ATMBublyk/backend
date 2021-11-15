@@ -21,7 +21,7 @@ from resources.withdrawal import Withdrawal, Withdrawals
 ACCESS_EXPIRES = timedelta(minutes=10)
 app = Flask(__name__)
 cors = CORS(app, resources={r"*": {"origins": "*"}})
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://lxoxahalzpfums:44af64654c0c9cad1a5600aeb784ca48ddad5a4845ec780bd6ffe4dc451fe707@ec2-54-220-53-223.eu-west-1.compute.amazonaws.com:5432/dae576orog172q'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI', 'sqlite:///data.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = ACCESS_EXPIRES
