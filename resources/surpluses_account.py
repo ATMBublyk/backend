@@ -19,7 +19,7 @@ class SurplusesAccount(Resource):
     def post(self):
         account: AccountModel = AccountModel.get_by_id(get_jwt_identity())
         if account is None:
-            return {"message": "Account id can't be null."}
+            return {"message": "Incorrect account id"}
         try:
             surpluses_account_schema: SurplusesAccountSchema = SurplusesAccountSchema.parse_raw(
                 json.dumps(request.get_json()))
@@ -37,7 +37,7 @@ class SurplusesAccount(Resource):
         if destination_account.have_surpluses_account and\
                 destination_account.surpluses_destination_card == account.card_number:
             return {"message": f"You can't assign card {destination_card},"
-                               f" because it's owner assign your card as surpluses."}
+                               f" because it's owner assign your card as surpluses."}, 400
         account.surpluses_destination_card = destination_card
         account.surpluses_max_balance = max_balance
         account.have_surpluses_account = True

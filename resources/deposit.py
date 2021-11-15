@@ -18,7 +18,6 @@ class DepositSchema(BaseModel):
 class Deposit(Resource):
     @jwt_required()
     def post(self):
-        identity = get_jwt_identity()
         account: AccountModel = AccountModel.get_by_id(get_jwt_identity())
         if account is None:
             return {"message": "incorrect account id"}
