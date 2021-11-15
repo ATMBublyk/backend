@@ -18,6 +18,8 @@ class SurplusesAccount(Resource):
     @jwt_required()
     def post(self):
         account: AccountModel = AccountModel.get_by_id(get_jwt_identity())
+        if account is None:
+            return {"message": "Account id can't be null."}
         try:
             surpluses_account_schema: SurplusesAccountSchema = SurplusesAccountSchema.parse_raw(
                 json.dumps(request.get_json()))
@@ -31,6 +33,11 @@ class SurplusesAccount(Resource):
             return {"message": "Invalid destination card."}, 400
         if account.card_number == surpluses_account_schema.destinationCard:
             return {"message": "You can't send money to your own card."}, 400
+        destination_account: AccountModel = AccountModel.get_by_card(destination_card)
+        if destination_account.have_surpluses_account and\
+                destination_account.surpluses_destination_card == account.card_number:
+            return {"message": f"You can't assign card {destination_card},"
+                               f" because it's owner assign your card as surpluses."}
         account.surpluses_destination_card = destination_card
         account.surpluses_max_balance = max_balance
         account.have_surpluses_account = True

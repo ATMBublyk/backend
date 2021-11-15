@@ -22,7 +22,7 @@ class Transfer(Resource):
     def post(self):
         account: AccountModel = AccountModel.get_by_id(get_jwt_identity())
         if account is None:
-            return {"message": "incorrect account id"}
+            return {"message": "incorrect account id"}, 400
         try:
             json_dict = request.get_json()
             if json_dict is None:  # for regular payments executor
@@ -31,7 +31,7 @@ class Transfer(Resource):
         except ValidationError:
             return {"message": "Invalid arguments."}, 400
         if transfer_schema.amount is None:
-            return {"message": "Amount can't be null."}
+            return {"message": "Amount can't be null."}, 400
         if account.balance < transfer_schema.amount:
             return {"message": "Not enough money on the account."}, 400
         if account.card_number == transfer_schema.destinationCard:
