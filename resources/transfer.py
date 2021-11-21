@@ -32,6 +32,8 @@ class Transfer(Resource):
             return {"message": "Invalid arguments."}, 400
         if transfer_schema.amount is None:
             return {"message": "Amount can't be null."}, 400
+        if transfer_schema.amount <= 0:
+            return {"message": "Amount can't be negative"}
         if account.balance < transfer_schema.amount:
             return {"message": "Not enough money on the account."}, 400
         if account.card_number == transfer_schema.destinationCard:
@@ -43,7 +45,6 @@ class Transfer(Resource):
 
     @staticmethod
     def make_transfer(account_id, card, amount, is_regular, is_auto=False) -> TransferModel:
-        # todo session from another thread
         account: AccountModel = AccountModel.get_by_id(account_id)
         destination_account: AccountModel = AccountModel.get_by_card(card)
         account.balance -= amount

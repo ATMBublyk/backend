@@ -38,11 +38,6 @@ class BankModel(db.Model):
         else:
             raise WrongPinException()
 
-    def get_balance_by_id(self, _id):
-        for account in self.accounts.all():
-            if account.id == _id:
-                return account.balance
-
     def has_accounts(self):
         return bool(self.accounts.all())
 
